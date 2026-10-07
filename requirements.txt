@@ -1,0 +1,14 @@
+# Core automation
+pyautogui>=0.9.54
+opencv-python>=4.8.0
+numpy>=2.0.0
+pytesseract>=0.3.10
+mss>=9.0.1
+Pillow>=10.0.0
+pywin32>=306
+
+# Configuration & data
+PyYAML>=6.0.1
+
+# Logging & utilities
+colorama>=0.4.6

@@ -1,0 +1,215 @@
+# Clash of Clans Bot — Configuration
+# ====================================
+# All settings are here. The bot reads this at startup.
+# Accounts are fully dynamic — add/remove entries freely.
+# The bot will process them in the order listed.
+#
+# IMPORTANT: TH levels here are used for storage capacity math only.
+# Update them if your TH level changes.
+
+# ── Accounts ────────────────────────────────────────────────────────────────
+# supercell_id_index : 0-based position in the SCID account list in-game
+# th_level           : Current Town Hall level (for storage maths)
+# max_builders       : Home village builder cap (5 = normal, 6 = OTTO unlocked)
+#                      Goblin Builder is detected and excluded at runtime.
+# bb_max_builders    : Builder Base builder cap (3 for all accounts)
+accounts:
+  - name: "Player1"
+    supercell_id_name: "Player1"
+    player_name: "Player 1"
+    enabled: true
+    supercell_id_index: 0     # 1st account in the in-game SCID list
+    th_level: 16
+    max_builders: 6           # 6 = OTTO unlocked (permanent 6th builder)
+    bb_max_builders: 3
+  - name: "Player2"
+    supercell_id_name: "Player2"
+    player_name: "Player 2"
+    enabled: true
+    supercell_id_index: 1     # 2nd account in the in-game SCID list
+    th_level: 16
+    max_builders: 5           # 5 = standard (no OTTO)
+    bb_max_builders: 3
+  - name: "Player3"
+    supercell_id_name: "Player3"
+    player_name: "Player 3"
+    enabled: true
+    supercell_id_index: 2     # 3rd account in the in-game SCID list
+    th_level: 16
+    max_builders: 6           # 6 = OTTO unlocked (permanent 6th builder)
+    bb_max_builders: 3
+
+# ── Builder Safety Notes ──────────────────────────────────────────────────────
+# OTTO Hutt (6th permanent builder): Unlocked by maxing the Builder Base.
+#   → This IS used by the bot. Set max_builders: 6 for accounts with OTTO.
+#
+# Goblin Builder (temporary event builder): Appears/disappears unpredictably.
+#   → NEVER used. The bot detects it by checking if HUD total > max_builders.
+#     e.g. account has OTTO (max=6) → HUD shows 5/7 = goblin present → treat as 5/6.
+#     e.g. account has no OTTO (max=5) → HUD shows 2/6 = goblin present → treat as 2/5.
+
+# ── Farming Settings ─────────────────────────────────────────────────────────
+farming:
+  # Minimum loot to accept a target base during scouting
+  min_gold: 500000
+  min_elixir: 500000
+  min_dark_elixir: 0           # Set > 0 to also filter by DE
+  # Maximum times to press "Next" when searching for targets
+  max_next_presses: 50
+  # Stop farming when storages are this % full (0.0 - 1.0)
+  storage_full_threshold: 0.90
+  # Final top-off threshold before moving to upgrades
+  final_farm_threshold: 0.95
+  # Max attacks per account per session (safety cap)
+  max_attacks_per_session: 30
+
+# ── Army Settings ─────────────────────────────────────────────────────────────
+army:
+  preferred_troop: "super_dragon"
+  fallback_troop: "dragon"
+  super_dragon_de_cost: 25000
+  # Number of earthquake spells to train
+  eq_spell_count: 5
+
+# ── Hero Settings ─────────────────────────────────────────────────────────────
+heroes:
+  auto_upgrade: true
+  # Priority order for upgrades (first idle affordable hero gets upgraded)
+  # Dragon Duke costs Dark Elixir — kept last so BK/AQ/MP/GW/RC go first.
+  priority:
+    - "Barbarian King"
+    - "Archer Queen"
+    - "Minion Prince"
+    - "Grand Warden"
+    - "Royal Champion"
+    - "Dragon Duke"
+
+# ── Pet Settings ──────────────────────────────────────────────────────────────
+pets:
+  auto_upgrade: true
+  # Priority order for pet upgrades
+  priority:
+    - "L.A.S.S.I"
+    - "Electro Owl"
+    - "Mighty Yak"
+    - "Unicorn"
+    - "Frosty"
+    - "Diggy"
+    - "Poison Lizard"
+    - "Phoenix"
+    - "Spirit Fox"
+    - "Angry Jelly"
+
+# ── Laboratory Settings ───────────────────────────────────────────────────────
+lab:
+  auto_research: true
+
+# ── Wall Settings ─────────────────────────────────────────────────────────────
+walls:
+  auto_upgrade: true
+  # Upgrade up to this many walls per session (spends excess loot)
+  max_per_session: 10
+  # Don't spend walls if resources drop below this (keep a reserve)
+  min_resource_keep: 500000
+
+# ── Builder Base Settings ─────────────────────────────────────────────────────
+builder_base:
+  enabled: true
+  farm_versus_battles: true
+  max_versus_battles_per_session: 10
+  star_lab_research: true
+  boost_clock_tower: true
+
+# ── Safety Settings ───────────────────────────────────────────────────────────
+safety:
+  # Master gem protection switch — NEVER disable this
+  gem_guard_enabled: true
+  # Stop the bot if gems decrease unexpectedly
+  emergency_stop_on_gem_loss: true
+  # Save diagnostic screenshots when gem dialogs are detected
+  screenshot_on_error: true
+  # Max consecutive full-cycle errors before emergency stop
+  max_consecutive_errors: 5
+  # Never allow the bot to use the 6th (Goblin) builder slot
+  exclude_goblin_builder: true
+
+# ── Emulator Settings ─────────────────────────────────────────────────────────
+emulator:
+  # Google Play Games window title (partial match is fine)
+  window_title: "Clash of Clans"
+  # Name of the emulator process to manage
+  process_name: "Clash of Clans"
+  # Path to the GPG launcher (used to cold-start if needed)
+  launcher_path: "C:\\Program Files\\Google\\Play Games\\Bootstrapper.exe"
+  # Time to wait for game to fully load after launch (seconds)
+  game_load_timeout_sec: 120
+  # Time to wait after emulator launch before doing anything
+  launch_settle_sec: 5.0
+
+# ── Timing Settings ───────────────────────────────────────────────────────────
+timing:
+  # Delay between most in-game actions (seconds)
+  between_actions_delay_sec: 1.5
+  # Wait after tapping a button for screen to load
+  screen_load_wait_sec: 3.0
+  # Wait for dialog animations to complete
+  dialog_animation_wait_sec: 0.8
+  # Click delay (milliseconds)
+  click_delay_ms: 150
+  # How many seconds before an upgrade completes to wake up
+  wake_before_upgrade_sec: 60
+  # If no upgrades are running, check again after this many minutes
+  idle_check_interval_min: 30
+
+# ── OCR Settings ──────────────────────────────────────────────────────────────
+ocr:
+  tesseract_path: "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+  # PSM 7 = single text line (good for reading numbers)
+  default_psm: 7
+  # Custom character whitelist for number reading
+  number_whitelist: "0123456789KkMm.,/ "
+
+# ── Paths ─────────────────────────────────────────────────────────────────────
+paths:
+  template_dir: "templates"
+  screenshot_dir: "Screenshots"
+  log_dir: "logs"
+  data_dir: "data"
+  db_file: "data/bot.db"
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+logging:
+  level: "INFO"           # DEBUG, INFO, WARNING, ERROR
+  log_dir: "logs"
+  max_file_size_mb: 10
+  backup_count: 5
+  console: true
+
+# Multi-method UI detection: templates first, then OCR, then only
+# state-validated viewport-scaled coordinates where explicitly allowed.
+detection:
+  strategy: "smart"
+  log_detection_method: true
+
+# ── Backend Configuration ────────────────────────────────────────────────────
+backends:
+  active: "pc"             # "pc", "adb", "mock", or "dry_run"
+  pc:
+    window_title: "Google Play Games"
+    ocr_scale: 2
+    tap_delay_sec: 0.15
+    jitter_px: 3
+    screenshot_interval_sec: 0.5
+  adb:
+    device_serial: null    # Specific serial or null to auto-select single device
+    adb_path: null         # Path to adb binary or null to auto-detect
+    ocr_scale: 2
+    tap_delay_sec: 0.15
+    jitter_px: 3
+    screenshot_interval_sec: 0.5
+    package_name: "com.supercell.clashofclans"
+  mock:
+    screen_size: [1920, 1080]
+  dry_run:
+    target_backend: "pc"   # Underlying backend to wrap in dry-run mode
+

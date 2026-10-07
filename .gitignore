@@ -1,0 +1,43 @@
+# Virtual environments
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Database (session-specific)
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
+# Logs (regenerated at runtime)
+logs/
+
+# Screenshots (reference only — not needed for bot to run)
+screenshots/
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Secrets and local config (use config.example.yaml as template)
+config.yaml
+config/config.yaml
+
+# Runtime output and debug
+debug/
+*.lock
+data/*.lock
+
+# Test samples (may contain account screenshots)
+tests/samples/
+samples/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
